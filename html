@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Ôn tập Vật lí 12 - Chương 1 đến Chương 3</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; line-height: 1.5; color: #1f2937; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  button.tab { padding: 8px 14px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; border-radius: 6px; font-weight: 600; }
+  button.tab.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+  .panel { display: none; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background: #fff; }
+  .panel.active { display: block; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+  input, select { padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
+  .result { font-weight: 700; color: #0f766e; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h2>Vật lí 12 (Ch.1 – Ch.3) — Học liệu tương tác</h2>
+<div class="tabs">
+  <button class="tab active" onclick="showTab('summary', this)">Tóm tắt công thức</button>
+  <button class="tab" onclick="showTab('convert', this)">Quy đổi & Boyle/Charles</button>
+  <button class="tab" onclick="showTab('quiz', this)">Quiz nhanh</button>
+</div>
+
+<div id="summary" class="panel active">
+  <h3>Công thức trọng tâm</h3>
+  <p><b>Ch.1:</b> T(K) = t(°C) + 273; &Delta;U = Q + A; Q = mc&Delta;T; Q = &lambda;m; Q = Lm.</p>
+  <p><b>Ch.2:</b> p<sub>1</sub>V<sub>1</sub> = p<sub>2</sub>V<sub>2</sub> (đẳng nhiệt); V<sub>1</sub>/T<sub>1</sub> = V<sub>2</sub>/T<sub>2</sub> (đẳng áp); pV = nRT.</p>
+  <p><b>Ch.3:</b> F = BIl·sin(&theta;); &Phi; = NBS·cos(&alpha;); e<sub>c</sub> = -&Delta;&Phi;/&Delta;t.</p>
+</div>
+
+<div id="convert" class="panel">
+  <h3>Quy đổi nhiệt độ Celsius &harr; Kelvin</h3>
+  <div class="row">
+    <label>t (°C): <input type="number" id="tC" value="27" oninput="calcTemp()"></label>
+    <span>&rArr; T (K): <b id="tK">300</b> K</span>
+  </div>
+  <h3>Tính nhanh định luật Boyle (p<sub>1</sub>V<sub>1</sub> = p<sub>2</sub>V<sub>2</sub>)</h3>
+  <div class="row">
+    <label>p<sub>1</sub>: <input type="number" id="p1" value="1" step="any"></label>
+    <label>V<sub>1</sub>: <input type="number" id="v1" value="8" step="any"></label>
+    <label>p<sub>2</sub>: <input type="number" id="p2" value="4" step="any"></label>
+    <button onclick="calcBoyle()">Tính V<sub>2</sub></button>
+  </div>
+  <div class="result" id="boyleOut">V<sub>2</sub> = 2</div>
+</div>
+
+<div id="quiz" class="panel">
+  <h3>Câu hỏi trắc nghiệm nhanh</h3>
+  <p>1. Nhiệt độ 27°C tương ứng bao nhiêu Kelvin?</p>
+  <select id="q1"><option value="">-- Chọn --</option><option value="300">300 K</option><option value="27">27 K</option><option value="246">246 K</option></select>
+  <p>2. Nén đẳng nhiệt làm thể tích giảm 2 lần thì áp suất:</p>
+  <select id="q2"><option value="">-- Chọn --</option><option value="up2">Tăng 2 lần</option><option value="down2">Giảm 2 lần</option><option value="same">Không đổi</option></select>
+  <div class="row"><button onclick="gradeQuiz()">Chấm điểm</button></div>
+  <div class="result" id="quizOut"></div>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function calcTemp() {
+  const t = parseFloat(document.getElementById('tC').value);
+  document.getElementById('tK').textContent = isNaN(t) ? '—' : (t + 273).toFixed(2);
+}
+function calcBoyle() {
+  const p1 = parseFloat(document.getElementById('p1').value);
+  const v1 = parseFloat(document.getElementById('v1').value);
+  const p2 = parseFloat(document.getElementById('p2').value);
+  document.getElementById('boyleOut').textContent = (p2 && !isNaN(p1*v1/p2)) ? `V₂ = ${(p1*v1/p2).toFixed(4)}` : 'Kiểm tra lại dữ liệu';
+}
+function gradeQuiz() {
+  let score = 0;
+  if (document.getElementById('q1').value === '300') score++;
+  if (document.getElementById('q2').value === 'up2') score++;
+  document.getElementById('quizOut').textContent = `Kết quả: ${score}/2 câu đúng.`;
+}
+</script>
+</body>
+</html>
